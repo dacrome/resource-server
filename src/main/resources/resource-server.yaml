@@ -1,0 +1,37 @@
+server:
+    port: 42010
+management:
+    port: 43010
+
+# OSIAM resource server configuration
+org.osiam:
+  resource-server:
+    # Home URL (needed for self reference)
+    home: http://localhost:8080/osiam-resource-server
+    db.vendor: postgresql
+    profiling: false
+  # OSIAM auth server configuration
+  auth-server.home: http://localhost:8080/osiam-auth-server
+
+logging.level.: INFO
+logging.level.org.osiam: INFO
+logging.level.org.hibernate: OFF
+
+spring.jpa:
+  properties.hibernate.hbm2ddl.auto: validate
+  show-sql: false
+  database-platform: org.hibernate.dialect.PostgresPlusDialect
+
+spring.datasource:
+  url: jdbc:postgresql://localhost:5432/ong
+  username: ong
+  password: b4s3dg0d
+  driverClassName: org.postgresql.Driver
+  validation-query: SELECT 1
+
+flyway:
+  locations: classpath:db/migration/postgresql
+  baseline-version: 0
+  check-location: true
+  baseline-on-migrate: true
+  table: resource_server_schema_version
