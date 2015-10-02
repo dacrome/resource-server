@@ -44,7 +44,7 @@ import org.osiam.storage.query.QueryFilterParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -95,7 +95,7 @@ public class SCIMUserProvisioning implements SCIMProvisioning<User> {
         UserEntity userEntity = userConverter.fromScim(user);
         userEntity.setId(UUID.randomUUID());
 
-        String hashedPassword = passwordEncoder.encodePassword(user.getPassword(), userEntity.getId());
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
         userEntity.setPassword(hashedPassword);
 
         userDao.create(userEntity);
@@ -125,7 +125,7 @@ public class SCIMUserProvisioning implements SCIMProvisioning<User> {
         userEntity.setId(existingEntity.getId());
 
         if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            String hashedPassword = passwordEncoder.encodePassword(user.getPassword(), userEntity.getId());
+            String hashedPassword = passwordEncoder.encode(user.getPassword());
             userEntity.setPassword(hashedPassword);
         } else {
             userEntity.setPassword(existingEntity.getPassword());

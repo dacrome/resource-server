@@ -30,7 +30,7 @@ import org.osiam.resources.scim.Meta
 import org.osiam.resources.scim.User
 import org.osiam.storage.dao.UserDao
 import org.osiam.storage.entities.UserEntity
-import org.springframework.security.authentication.encoding.PasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -615,7 +615,7 @@ class UserUpdaterSpec extends Specification {
 
         then:
         1 * userEntity.getId() >> uuid
-        1 * passwordEncoder.encodePassword(IRRELEVANT, uuid) >> 'hashedPassword'
+        1 * passwordEncoder.encode(IRRELEVANT) >> 'hashedPassword'
         1 * userEntity.setPassword('hashedPassword')
     }
 

@@ -32,7 +32,7 @@ import org.osiam.resources.scim.User;
 import org.osiam.storage.dao.UserDao;
 import org.osiam.storage.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Strings;
@@ -233,7 +233,7 @@ public class UserUpdater {
         }
 
         if (!Strings.isNullOrEmpty(user.getPassword())) {
-            String hashedPassword = passwordEncoder.encodePassword(user.getPassword(), userEntity.getId());
+            String hashedPassword = passwordEncoder.encode(user.getPassword());
             userEntity.setPassword(hashedPassword);
         }
     }

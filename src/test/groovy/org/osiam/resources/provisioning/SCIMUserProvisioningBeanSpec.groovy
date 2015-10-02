@@ -30,7 +30,7 @@ import org.osiam.storage.dao.SearchResult
 import org.osiam.storage.dao.UserDao
 import org.osiam.storage.entities.MetaEntity
 import org.osiam.storage.entities.UserEntity
-import org.springframework.security.authentication.encoding.PasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
 
 class SCIMUserProvisioningBeanSpec extends Specification {
@@ -77,7 +77,7 @@ class SCIMUserProvisioningBeanSpec extends Specification {
         def user = scimUserProvisioningBean.create(scimUser)
 
         then:
-        1 * passwordEncoder.encodePassword(_, _) >> "password"
+        1 * passwordEncoder.encode(_) >> "password"
         1 * userConverter.fromScim(_) >> new UserEntity(userName: 'test')
         1 * userDao.create(_)
         1 * userConverter.toScim(_) >> { UserEntity it ->
@@ -193,7 +193,7 @@ class SCIMUserProvisioningBeanSpec extends Specification {
         then:
         3 * userScim.getPassword() >> password
         1 * userEntity.getId() >> id
-        1 * passwordEncoder.encodePassword(password, id) >> hashedPassword
+        1 * passwordEncoder.encode(password) >> hashedPassword
         1 * userEntity.setPassword(hashedPassword)
     }
 

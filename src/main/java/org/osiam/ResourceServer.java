@@ -16,9 +16,10 @@ import org.springframework.boot.builder.*;
 import org.springframework.boot.context.web.*;
 import org.springframework.context.annotation.*;
 import org.springframework.http.*;
-import org.springframework.security.authentication.encoding.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.*;
 import org.springframework.security.oauth2.config.annotation.web.configurers.*;
 import org.springframework.security.oauth2.provider.error.*;
@@ -108,10 +109,8 @@ public class ResourceServer extends SpringBootServletInitializer {
     }
 
     @Bean
-    public ShaPasswordEncoder passwordEncoder() {
-        ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder(512);
-        passwordEncoder.setIterations(1000);
-        return passwordEncoder;
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
     }
 
     @Configuration
